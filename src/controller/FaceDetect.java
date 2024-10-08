@@ -44,8 +44,15 @@ public class FaceDetect {
     }
 
     // Phương thức phát hiện và lưu khuôn mặt
-    public void detectFace() {
+    public void detectFace(int studentId) { // Changed parameter to accept student's ID
         Mat frame = new Mat();
+        
+        // Create a directory for the student using their ID if it doesn't exist
+        String studentDir = datasetDir + "/" + studentId; // Use student ID for directory
+        File directory = new File(studentDir);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
 
         try {
             while (true) {
@@ -65,7 +72,7 @@ public class FaceDetect {
 
                         // Lưu khuôn mặt vào file
                         Mat faceImage = new Mat(frame, face);
-                        String filename = datasetDir + "/face_" + faceCount + ".jpg";
+                        String filename = studentDir + "/face_" + faceCount + ".jpg"; // Updated path to include student's ID
                         try {
                             Imgcodecs.imwrite(filename, faceImage);
                             System.out.println("Đã lưu khuôn mặt vào: " + filename);

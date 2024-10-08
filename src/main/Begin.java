@@ -20,7 +20,7 @@ public class Begin {                     // Đổi tên lớp thành Main
         // Lưu thông tin học sinh vào cơ sở dữ liệu
         ConnectDatabase.saveStudentData(newStudent); // Gọi phương thức lưu dữ liệu
         
-        // Gọi phương thức detectFace để bắt đầu phát hiện và lưu khuôn mặt
-        faceDetect.detectFace(); // Gọi phương thức chụp ảnh
+        // Gọi phương thức detectFace và truyền ID học sinh
+        faceDetect.detectFace(newStudent.getId()); // Updated to pass student's ID
     }
 }
