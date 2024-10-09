@@ -16,7 +16,7 @@ import org.opencv.core.MatOfRect;
 import org.opencv.imgcodecs.Imgcodecs;
 
 import java.io.File;
- 
+
 public class FaceDetect {
 
     private VideoCapture camera;
