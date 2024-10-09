@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import model.student; // Thêm import cho lớp student
+import model.Student; // Changed import to follow Java naming conventions
 
 public class ConnectDatabase {
     
@@ -28,21 +28,25 @@ public class ConnectDatabase {
     }
 
     // Phương thức để lưu dữ liệu học sinh vào database
-    public static void saveStudentData(student student) {
-        String query = "INSERT INTO students (id, name, studentClass) VALUES (?, ?, ?)"; // Câu lệnh SQL để chèn dữ liệu
+    public static void saveStudentData(Student student) { // Changed parameter to follow Java naming conventions
+        String query = "INSERT INTO students (name, studentClass, faceImgPath, id) VALUES (?, ?, ?, ?)"; // Câu lệnh SQL để chèn dữ liệu
 
-        try (Connection connection = connect_db(); // Kết nối đến database
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-             
-            // Thiết lập các tham số cho câu lệnh SQL
-            preparedStatement.setInt(1, student.getId());
-            preparedStatement.setString(2, student.getName());
-            preparedStatement.setString(3, student.getStudentClass());
-//            preparedStatement.setString(4, student.getFaceImgPath());
+        try (Connection connection = connect_db()) { // Kết nối đến database
+            if (connection != null) { // Check if connection is not null
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    // Thiết lập các tham số cho câu lệnh SQL
+                     preparedStatement.setInt(4, student.getId()); // Uncomment if ID is needed
+                    preparedStatement.setString(1, student.getName());
+                    preparedStatement.setString(2, student.getStudentClass());
+                    preparedStatement.setString(3, student.getFaceImgPath()); // Call without parameters
 
-            // Thực thi câu lệnh
-            preparedStatement.executeUpdate();
-            System.out.println("Dữ liệu học sinh đã được lưu thành công!");
+                    // Thực thi câu lệnh
+                    preparedStatement.executeUpdate();
+                    System.out.println("Dữ liệu học sinh đã được lưu thành công!");
+                }
+            } else {
+                System.out.println("Kết nối database thất bại, không thể lưu dữ liệu.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

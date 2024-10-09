@@ -7,13 +7,16 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Point;
 import org.opencv.highgui.HighGui;
 import org.opencv.videoio.VideoCapture;
+
+import model.Student;
+
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.MatOfRect;
 import org.opencv.imgcodecs.Imgcodecs;
 
 import java.io.File;
-
+ 
 public class FaceDetect {
 
     private VideoCapture camera;
@@ -43,16 +46,23 @@ public class FaceDetect {
         }
     }
 
-    // Phương thức phát hiện và lưu khuôn mặt
-    public void detectFace(int studentId) { // Changed parameter to accept student's ID
-        Mat frame = new Mat();
-        
-        // Create a directory for the student using their ID if it doesn't exist
-        String studentDir = datasetDir + "/" + studentId; // Use student ID for directory
+    // Phương thức tạo thư mục cho sinh viên
+    private void createStudentDirectory(int studentId, String studentName) {
+        String studentDir = datasetDir + "/" + studentId + "_" + studentName; // Use id_name format
         File directory = new File(studentDir);
         if (!directory.exists()) {
             directory.mkdir();
         }
+    }
+
+    // Phương thức phát hiện và lưu khuôn mặt
+    public void detectFace(Student student) { // Accept Student object
+        Mat frame = new Mat();
+        
+        // Create a directory for the student using their ID and name
+        createStudentDirectory(student.getId(), student.getName()); // Call the new method
+
+        String studentDir = datasetDir + "/" + student.getId() + "_" + student.getName(); // Define studentDir here
 
         try {
             while (true) {
@@ -72,10 +82,11 @@ public class FaceDetect {
 
                         // Lưu khuôn mặt vào file
                         Mat faceImage = new Mat(frame, face);
-                        String filename = studentDir + "/face_" + faceCount + ".jpg"; // Updated path to include student's ID
+                        String filename = studentDir + "/face_" + faceCount + ".jpg"; // Updated path to include student's ID and name
                         try {
                             Imgcodecs.imwrite(filename, faceImage);
                             System.out.println("Đã lưu khuôn mặt vào: " + filename);
+                            student.setFaceImgPath(filename); // Save the path to the student object
                         } catch (Exception e) {
                             System.out.println("Không thể lưu khuôn mặt: " + e.getMessage());
                         }
@@ -90,7 +101,7 @@ public class FaceDetect {
                     }
 
                     HighGui.imshow("Face Detection", frame);
-                    if (HighGui.waitKey(1) == 'q') {
+                    if (HighGui.waitKey(1) == 'q') { 
                         break;
                     }
                 } else {

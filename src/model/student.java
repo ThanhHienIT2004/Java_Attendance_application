@@ -1,15 +1,19 @@
 package model;
 
 import java.util.Scanner;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-public class student {
+public class Student { // Changed class name to follow Java naming conventions
     private int id;
     private String name;
     private String studentClass;
     private String faceImgPath;
 
     // Hàm khởi tạo có tham số
-    public student(int id, String name, String studentClass, String faceImgPath) {
+    public Student(int id, String name, String studentClass, String faceImgPath) {
         this.id = id;
         this.name = name;
         this.studentClass = studentClass;
@@ -17,7 +21,7 @@ public class student {
     }
 
     // Hàm khởi tạo không tham số
-    public student() { 
+    public Student() { 
     }
 
     // Getters và Setters
@@ -45,7 +49,7 @@ public class student {
         this.studentClass = studentClass;
     }
 
-    public String getFaceImgPath() {
+    public String getFaceImgPath() { // Updated to return the face image path
         return faceImgPath;
     }
 
@@ -54,18 +58,17 @@ public class student {
     }
     
     // Phương thức hiển thị thông tin học sinh
-    public void displayStudentInfo(student student) {
-    	System.out.println("Thông tin học sinh:");
-    	
-    	System.out.println("Mã số học sinh: " + student.getId()); 
-        System.out.println("Tên: " + student.getName());
-        System.out.println("Lớp: " + student.getStudentClass());
-        
+    public void displayStudentInfo() {
+        System.out.println("Thông tin học sinh:");
+        System.out.println("Mã số học sinh: " + getId()); 
+        System.out.println("Tên: " + getName());
+        System.out.println("Lớp: " + getStudentClass());
     }
+
     // Phương thức nhập thông tin sinh viên
-    public student enterStudentInfo() {
+    public Student enterStudentInfo() {
         Scanner scanner = new Scanner(System.in);
-        student student = new student();
+        Student student = new Student();
 
         System.out.print("Nhập mã số học sinh: ");
         int studentId = scanner.nextInt();
